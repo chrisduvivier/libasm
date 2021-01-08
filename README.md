@@ -8,6 +8,8 @@ Nasm Tutorial. I noticed that the command to execute the assembled code was diff
 3: ./$(executable_name) -->
 - https://cs.lmu.edu/~ray/notes/nasmtutorial/
 
-# Compile
+# Compile on Mac
 gcc -m64 -g *.o main.c -o main
 nasm -fmacho64 %%%%%%.s -o %%%%%%.o
+
+# Compile on VM

@@ -1,8 +1,8 @@
 
-		global  _ft_strlen
+		global  ft_strlen
 		section .text
 
-_ft_strlen:
+ft_strlen:
 		xor		rax, rax			; set register rax = 0
 		jmp		compare				; skip 1st increment by jumping to cmp first
 

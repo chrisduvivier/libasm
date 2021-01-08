@@ -3,9 +3,9 @@
 
 
 		section	.text
-		global	_ft_strcpy
+		global	ft_strcpy
 
-_ft_strcpy:
+ft_strcpy:
 	xor		rcx, rcx				; set i = 0
 	jmp		compare
 
