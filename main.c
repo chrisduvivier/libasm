@@ -6,7 +6,7 @@
 /*   By: cduvivie <cduvivie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:06:24 by cduvivie          #+#    #+#             */
-/*   Updated: 2021/01/08 11:11:52 by cduvivie         ###   ########.fr       */
+/*   Updated: 2021/01/19 21:46:00 by cduvivie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,23 @@ int		ft_open_file(char *file)
 
 void	print_error(void)
 {
-	fprintf(stderr, "errno: [%d]\n", errno);
-	perror("Error printed by perror");
+	if (errno)
+	{
+		fprintf(stderr, "errno: [%d]\n", errno);
+		perror("Error printed by perror");
+	}
 	// fprintf(stderr, "Error opening file: [%s]\n", strerror(errnum));
+}
+
+int		test_ft_strdup(void)
+{
+	printf("===== ft_strdup =====\n");
+	
+	const char src[4] = "abc";
+	char *dup = ft_strdup(src);
+	printf("%s\n", dup);
+	free(dup);
+	return 0;
 }
 
 int		main(void)
@@ -75,8 +89,7 @@ int		main(void)
 	ft_strcpy(ptr2, string);
 	printf("[%s]\n", ptr2);
 	assert(strncmp(ptr1, ptr2, strlen(ptr1)) == 0);
-	if (errno)
-		print_error();
+	print_error();
 	free(ptr1);
 	free(ptr2);
 
@@ -94,22 +107,34 @@ int		main(void)
 	int output1;
 	int output2;
 	
+	printf("===== ft_write: TEST 1 =====\n");
 	output1 = write(1, 	  "ABCDEFG\n", 9);
-	output2 = ft_write(1, "ABCDEFG\n", 9);
-	// printf("output1: %d\n", output1);
-	// printf("output2: %d\n", output2);
-	// print_error();
-	assert(output1 == output2);
-
-	output2 = ft_write(1, "fss", -3);
-	printf("output2: %d\n", output2);
 	print_error();
 	copy_errnum = errno;
+	errno = 0;
+
+	output2 = ft_write(1, "ABCDEFG\n", 9);
+	printf("output1: %d\n", output1);
+	printf("output2: %d\n", output2);
+	print_error();
+	assert(output1 == output2);
+	copy_errnum = 0;
+	errno = 0;
+
+	printf("===== ft_write: TEST 2 =====\n");
 	output1 = write(1, "fss", -3);
+	print_error();
+	copy_errnum = errno;
+	errno = 0;
+	
+	output2 = ft_write(1, "fss", -3);
+	printf("output2: %d\n", output2);
 	printf("output1: %d\n", output1);
 	print_error();
 	assert(copy_errnum == errno);
-
+	copy_errnum = 0;
+	errno = 0;
+	
 	printf("===== ft_read =====\n");
 
 	int fd1;
@@ -119,11 +144,41 @@ int		main(void)
 	char buf1[BUFFER_SIZE + 1];
 	char buf2[BUFFER_SIZE + 1];
 
+	printf("===== ft_read: TEST 1 =====\n");
+	fd1 = ft_open_file("test.txt");
+	cursor1 = read(fd1, buf1, BUFFER_SIZE);
+	copy_errnum = errno;
+	printf("cursor1: %d\n", cursor1);
+	close(fd1);
+    fd2 = ft_open_file("test.txt");
+	cursor2 = ft_read(fd2, buf2, BUFFER_SIZE);
+	printf("cursor2: %d\n", cursor2);
+	close(fd2);
+	
+	buf1[cursor1] = '\0';
+	buf2[cursor2] = '\0';
+	printf("buf1:[%s]\n", buf1);
+	printf("buf2:[%s]\n", buf2);
+	assert(cursor1 == cursor2);
+	print_error();
+	assert(copy_errnum == errno);
+	copy_errnum = 0;
+	errno = 0;
+	bzero(buf1, BUFFER_SIZE+1);
+	bzero(buf2, BUFFER_SIZE+1);
+
+	printf("===== ft_read: TEST 2 =====\n");
 	fd1 = ft_open_file("test.txt");
     fd2 = ft_open_file("test.txt");
+	cursor1 = read(fd1, buf1, 4);
+	printf("cursor1: %d\n", cursor1);
+	print_error();
 
-	cursor1 = read(fd1, buf1, BUFFER_SIZE);
-	cursor2 = ft_read(fd2, buf2, BUFFER_SIZE);
+	copy_errnum = errno;
+	cursor2 = ft_read(fd2, buf2, 4);
+	printf("cursor2: %d\n", cursor2);
+	print_error();
+
 	assert(cursor1 == cursor2);
 	buf1[cursor1] = '\0';
 	buf2[cursor2] = '\0';
@@ -131,22 +186,43 @@ int		main(void)
 	printf("buf2:[%s]\n", buf2);
 	close(fd1);
 	close(fd2);
+	
+	// print_error();
+	copy_errnum = 0;
+	errno = 0;
+	bzero(buf1, BUFFER_SIZE+1);
+	bzero(buf2, BUFFER_SIZE+1);
 
+	printf("===== ft_read: TEST 3 =====\n");
 	fd1 = ft_open_file("test.txt");
     fd2 = ft_open_file("test.txt");
-	cursor1 = read(fd1, buf1, -1);
+	cursor1 = read(fd1, buf1, -4);
+	printf("cursor1: %d\n", cursor1);
+	print_error();
+
 	copy_errnum = errno;
-	cursor2 = ft_read(fd2, buf2, -1);
+	errno = 0;
+	cursor2 = ft_read(fd2, buf2, -4);
+	printf("cursor2: %d\n", cursor2);
+	print_error();
+
 	assert(cursor1 == cursor2);
-	assert(copy_errnum == errno);
 	buf1[cursor1] = '\0';
 	buf2[cursor2] = '\0';
+	printf("buf1:[%s]\n", buf1);
+	printf("buf2:[%s]\n", buf2);
 	close(fd1);
 	close(fd2);
 	
-	print_error();
-
+	// print_error();
+	copy_errnum = 0;
+	errno = 0;
+	bzero(buf1, BUFFER_SIZE+1);
+	bzero(buf2, BUFFER_SIZE+1);
+	
 	// printf("===== ft_strdup =====\n");
+
+	test_ft_strdup();
 	
 	return (0);
 }

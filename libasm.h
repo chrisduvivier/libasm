@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libasm.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cduvivie <cduvivie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cduvivie <cduvivie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:09:49 by cduvivie          #+#    #+#             */
-/*   Updated: 2020/11/12 22:51:47 by cduvivie         ###   ########.fr       */
+/*   Updated: 2021/01/16 12:06:18 by cduvivie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ char 		*ft_strcpy(char * dst, const char * src);
 int			ft_strcmp(const char *s1, const char *s2);
 ssize_t		ft_write(int fildes, const void *buf, size_t nbyte);
 ssize_t		ft_read(int fildes, void *buf, size_t nbyte);
+char		*ft_strdup(const char *str);
 
 #endif

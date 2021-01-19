@@ -8,8 +8,13 @@ Nasm Tutorial. I noticed that the command to execute the assembled code was diff
 3: ./$(executable_name) -->
 - https://cs.lmu.edu/~ray/notes/nasmtutorial/
 
+# Really important stuff
+"The Stack" is a frequently-used area of memory designed for functions to use as temporary storage.  This is normally where you store values while calling another function: you can't store values in the scratch registers, because the function could change them." https://www.cs.uaf.edu/2015/fall/cs301/lecture/09_16_stack.html
+-> USE PUSH AND POP
+
 # Compile on Mac
 gcc -m64 -g *.o main.c -o main
 nasm -fmacho64 %%%%%%.s -o %%%%%%.o
 
-# Compile on VM
+# Compile on VM (Linux)
+Syscall: https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md
