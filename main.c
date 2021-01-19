@@ -6,7 +6,7 @@
 /*   By: cduvivie <cduvivie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:06:24 by cduvivie          #+#    #+#             */
-/*   Updated: 2021/01/19 21:46:00 by cduvivie         ###   ########.fr       */
+/*   Updated: 2021/01/19 23:14:48 by cduvivie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,76 +38,75 @@ void	print_error(void)
 	// fprintf(stderr, "Error opening file: [%s]\n", strerror(errnum));
 }
 
-int		test_ft_strdup(void)
+int		test_ft_strlen(const char *s1, const char *s2, const char *s3)
 {
-	printf("===== ft_strdup =====\n");
+	printf("===== TEST: ft_strlen =====\n");
 	
-	const char src[4] = "abc";
-	char *dup = ft_strdup(src);
-	printf("%s\n", dup);
-	free(dup);
+	assert(ft_strlen(s1) == strlen(s1));
+	assert(ft_strlen(s2) == strlen(s2));
+	assert(ft_strlen(s3) == strlen(s3));
+
+	printf("OK\n");
 	return 0;
 }
 
-int		main(void)
+int		test_ft_strcpy(const char *s1)
 {
-	const char string[] =  "Hello, world!";
-	const char string_less[] = "Hello, oon!";
-	const char string_more[] = "Hello, zzzzz!";
-
-	int	str_len;
+	printf("===== TEST: ft_strcpy =====\n");
 	char *ptr1;
 	char *ptr2;
-	int	i = 0;
-	int copy_errnum;
-	
-	str_len = strlen(string);
-	printf("===== ft_strlen =====\n");
-	printf("ft_strlen = [%i]\n", ft_strlen(string));
-	assert(ft_strlen(string) == str_len);
+	char src[128];
+	char empty[1] = "";
 
-	if (!(ptr1 = (char *)malloc(sizeof(char) * str_len)))
-	{
-		printf("malloc fail exit\n");
+	bzero(&src, strlen(src));
+	if (!(ptr1 = strdup(src)))
 		return (1);
-	}
-	while (i < str_len - 1)
-		ptr1[i++] = 'a';
-	ptr1[i] = '\0';
-	
-	if (!(ptr2 = (char *)malloc(sizeof(char) * str_len)))
-	{
-		printf("malloc fail exit\n");
+	if (!(ptr2 = strdup(src)))
 		return (1);
-	}
-	while (i < str_len - 1)
-		ptr2[i++] = 'a';
-	ptr2[i] = '\0';
-	
-	printf("===== ft_strcpy =====\n");
-	strcpy(ptr1, string);
-	ft_strcpy(ptr2, string);
-	printf("[%s]\n", ptr2);
+	strcpy(ptr1, s1);
+	ft_strcpy(ptr2, s1);
 	assert(strncmp(ptr1, ptr2, strlen(ptr1)) == 0);
-	print_error();
+	bzero(ptr1, strlen(src));
+	bzero(ptr2, strlen(src));
+	
+	strcpy(ptr1, empty);
+	ft_strcpy(ptr2, empty);
+	assert(strncmp(ptr1, ptr2, strlen(ptr1)) == 0);
+	bzero(ptr1, strlen(src));
+	bzero(ptr2, strlen(src));
+
 	free(ptr1);
 	free(ptr2);
 
-	printf("===== ft_strcmp =====\n");
-	printf("ft_strcmp: [%i] = [%i] strcmp\n", ft_strcmp(string, string),  strcmp(string, string));
-	assert(strcmp(string, string) == ft_strcmp(string, string));
-	printf("ft_strcmp: [%i] = [%i] strcmp\n", ft_strcmp(string, string_less),  strcmp(string, string_less));
-	assert(strcmp(string, string_less) == ft_strcmp(string, string_less));
-	printf("ft_strcmp: [%i] = [%i] strcmp\n", ft_strcmp(string, string_more),  strcmp(string, string_more));
-	assert(strcmp(string, string_more) == ft_strcmp(string, string_more));
-	print_error();
+	printf("OK\n");
+	return 0;
+}
 
-	printf("===== ft_write =====\n");
+int		test_ft_strcmp(const char *s1, const char *s2, const char *s3)
+{
+	printf("===== TEST: ft_strcmp =====\n");
+	
+	// printf("ft_strcmp: [%i] = [%i] strcmp\n", ft_strcmp(s1, s1),  strcmp(s1, s1));
+	assert(strcmp(s1, s1) == ft_strcmp(s1, s1));
+	// printf("ft_strcmp: [%i] = [%i] strcmp\n", ft_strcmp(s1, s2),  strcmp(s1, s2));
+	assert(strcmp(s1, s2) == ft_strcmp(s1, s2));
+	// printf("ft_strcmp: [%i] = [%i] strcmp\n", ft_strcmp(s1, s3),  strcmp(s1, s3));
+	assert(strcmp(s1, s3) == ft_strcmp(s1, s3));
+	print_error();
+	
+	printf("OK\n");
+	return 0;
+}
+
+int		test_ft_write(void)
+{
+	printf("===== TEST: ft_write =====\n");
 	
 	int output1;
 	int output2;
+	int	copy_errnum;
 	
-	printf("===== ft_write: TEST 1 =====\n");
+	printf("---TEST 1---\n");
 	output1 = write(1, 	  "ABCDEFG\n", 9);
 	print_error();
 	copy_errnum = errno;
@@ -121,7 +120,7 @@ int		main(void)
 	copy_errnum = 0;
 	errno = 0;
 
-	printf("===== ft_write: TEST 2 =====\n");
+	printf("---TEST 2 (errno test)---\n");
 	output1 = write(1, "fss", -3);
 	print_error();
 	copy_errnum = errno;
@@ -131,20 +130,27 @@ int		main(void)
 	printf("output2: %d\n", output2);
 	printf("output1: %d\n", output1);
 	print_error();
-	assert(copy_errnum == errno);
+	assert(copy_errnum == errno);		// THIS LINE CHECKS THE ERRNO FOR BOTY FUNCTIONS
 	copy_errnum = 0;
 	errno = 0;
 	
-	printf("===== ft_read =====\n");
+	return (0);
+}
 
+int		test_ft_read(void)
+{
+	printf("===== TEST: ft_read =====\n");
+	
+	int	copy_errnum;
 	int fd1;
 	int fd2;
 	int cursor1;
 	int cursor2;
 	char buf1[BUFFER_SIZE + 1];
 	char buf2[BUFFER_SIZE + 1];
+	
 
-	printf("===== ft_read: TEST 1 =====\n");
+	printf("---TEST 1---\n");
 	fd1 = ft_open_file("test.txt");
 	cursor1 = read(fd1, buf1, BUFFER_SIZE);
 	copy_errnum = errno;
@@ -161,13 +167,13 @@ int		main(void)
 	printf("buf2:[%s]\n", buf2);
 	assert(cursor1 == cursor2);
 	print_error();
-	assert(copy_errnum == errno);
+	assert(copy_errnum == errno);		// THIS LINE CHECKS THE ERRNO FOR BOTY FUNCTIONS
 	copy_errnum = 0;
 	errno = 0;
 	bzero(buf1, BUFFER_SIZE+1);
 	bzero(buf2, BUFFER_SIZE+1);
 
-	printf("===== ft_read: TEST 2 =====\n");
+	printf("---TEST 2---\n");
 	fd1 = ft_open_file("test.txt");
     fd2 = ft_open_file("test.txt");
 	cursor1 = read(fd1, buf1, 4);
@@ -193,7 +199,7 @@ int		main(void)
 	bzero(buf1, BUFFER_SIZE+1);
 	bzero(buf2, BUFFER_SIZE+1);
 
-	printf("===== ft_read: TEST 3 =====\n");
+	printf("---TEST 3 (errno test)---\n");
 	fd1 = ft_open_file("test.txt");
     fd2 = ft_open_file("test.txt");
 	cursor1 = read(fd1, buf1, -4);
@@ -207,10 +213,7 @@ int		main(void)
 	print_error();
 
 	assert(cursor1 == cursor2);
-	buf1[cursor1] = '\0';
-	buf2[cursor2] = '\0';
-	printf("buf1:[%s]\n", buf1);
-	printf("buf2:[%s]\n", buf2);
+	assert(copy_errnum == errno);		// THIS LINE CHECKS THE ERRNO FOR BOTY FUNCTIONS
 	close(fd1);
 	close(fd2);
 	
@@ -219,10 +222,45 @@ int		main(void)
 	errno = 0;
 	bzero(buf1, BUFFER_SIZE+1);
 	bzero(buf2, BUFFER_SIZE+1);
-	
-	// printf("===== ft_strdup =====\n");
+	printf("OK\n");
+	return (0);
+}
 
-	test_ft_strdup();
+int		test_ft_strdup(const char *s1)
+{
+	printf("===== TEST: ft_strdup =====\n");
+
+	char *my_ft;
+	char *origi;
+	char *empty = "";
 	
+	my_ft = ft_strdup(s1);
+	origi = strdup(s1);
+	assert(strncmp(my_ft, origi, strlen(origi)) == 0);
+	free(my_ft);
+	free(origi);
+
+	my_ft = ft_strdup(empty);
+	origi = strdup(empty);
+	assert(strncmp(my_ft, origi, strlen(origi)) == 0);
+	free(my_ft);
+	free(origi);
+	
+	printf("OK\n");
+	return 0;
+}
+
+int		main(void)
+{
+	const char string[] =  "Hello, world!";
+	const char string_less[] = "Hello, oon!";
+	const char string_more[] = "Hello, zzzzz!";
+
+	test_ft_strlen(string, string_less, string_more);
+	test_ft_strcpy(string);
+	test_ft_strcmp(string, string_less, string_more);
+	test_ft_write();
+	test_ft_read();
+	test_ft_strdup(string);
 	return (0);
 }

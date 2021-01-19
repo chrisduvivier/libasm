@@ -6,7 +6,7 @@
 /*   By: cduvivie <cduvivie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:09:49 by cduvivie          #+#    #+#             */
-/*   Updated: 2021/01/16 12:06:18 by cduvivie         ###   ########.fr       */
+/*   Updated: 2021/01/19 22:47:58 by cduvivie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 extern  int errno;
 
-int			ft_strlen(const char *str);
+size_t			ft_strlen(const char *str);
 char 		*ft_strcpy(char * dst, const char * src);
 int			ft_strcmp(const char *s1, const char *s2);
 ssize_t		ft_write(int fildes, const void *buf, size_t nbyte);
