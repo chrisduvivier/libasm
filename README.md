@@ -18,3 +18,6 @@ nasm -fmacho64 %%%%%%.s -o %%%%%%.o
 
 # Compile on VM (Linux)
 Syscall: https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md
+
+# Note for myself after 1st correction
+Passing fd1 = 0, fd2 = 0 and calling ft_read made the second ft_write to return -1 directly. 

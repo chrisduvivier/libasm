@@ -6,7 +6,7 @@
 /*   By: cduvivie <cduvivie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:09:49 by cduvivie          #+#    #+#             */
-/*   Updated: 2021/01/19 22:47:58 by cduvivie         ###   ########.fr       */
+/*   Updated: 2021/01/22 10:51:46 by cduvivie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/uio.h>
 # include <fcntl.h>
 
-# define BUFFER_SIZE 32
+# define BUFFER_SIZE 128
 
 extern  int errno;
 
