@@ -6,7 +6,7 @@
 /*   By: cduvivie <cduvivie@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:06:24 by cduvivie          #+#    #+#             */
-/*   Updated: 2021/01/22 11:45:42 by cduvivie         ###   ########.fr       */
+/*   Updated: 2021/01/25 12:12:21 by cduvivie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,10 +157,10 @@ int		test_ft_write(char *filename)
 
 		char outpur_text[] = "THIS IS YOUR FILE\n";
 		fd1 = ft_open_write_file(filename);
-		// output1 = write(fd1, outpur_text, strlen(outpur_text));
+		output1 = write(fd1, outpur_text, strlen(outpur_text));
 		// print_error();
-		// copy_errnum = errno;
-		// errno = 0;
+		copy_errnum = errno;
+		errno = 0;
 		close(fd1);
 		
 		fd2 = ft_open_write_file(filename);
@@ -168,8 +168,8 @@ int		test_ft_write(char *filename)
 		// printf("output1: %d\n", output1);
 		// printf("output2: %d\n", output2);
 		// print_error();
-		// assert(output1 == output2);
-		// assert(copy_errnum == errno);		// THIS LINE CHECKS THE ERRNO FOR BOTY FUNCTIONS
+		assert(output1 == output2);
+		assert(copy_errnum == errno);		// THIS LINE CHECKS THE ERRNO FOR BOTY FUNCTIONS
 		close(fd2);
 		copy_errnum = 0;
 		errno = 0;
